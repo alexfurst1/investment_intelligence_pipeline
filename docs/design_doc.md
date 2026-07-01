@@ -6,10 +6,10 @@
 # Goals: 
     - Showcase production-minded data engineering practices
     - Practice applied data engineering and improve practical ML skill
-    - Design for scale, without actually scaling (yet...)
+    - Design for scale, without actually scaling 
     - Extract messy financial data efficiently from multiple public sources
-    - Orchestrate pipeline to run on an automatic, daily batch schedule
-    - transform and structure data in a medallion architecture
+    - Orchestrate pipeline to run on an automatic batch schedule
+    - transform and structure data in a medallion-like architecture
     - test data quality with using dbt
     - extract and engineer multiple macroeconomic signals from data
     - input cleaned data into ML model to recommend asset allocation with horizon variable
@@ -35,7 +35,7 @@
      - DuckDB for querying bronze Parquet files
     
     4. Orchestration
-     - Prefect
+     - Prefect locally with decorators for v1, stand up server with UI and scheduling for v2.
 
     5. Transformation
      - dbt Core for silver and gold, along with testing
@@ -54,7 +54,7 @@
      - FastAPI endpoint
 
     10. Infrastructure
-     - Docker for containerization, Docker Compose for spin up and orchestration
+     - Docker for containerization, Docker Compose for spin up and runtime
 
 # Data Model
     1. To be fetched from FRED:
@@ -68,6 +68,14 @@
         - FEDFUNDS (for sharpe ratio)
     2. To be fetched from Yahoo Finance:
         - asset signals (sharpe ratio, max drawdown, volatility regime)
+
+    Schemas:
+        Bronze layer:
+            - raw parquet files
+        Silver layer:
+            - need to test FRED and Yahoo APIS first
+        Gold layer:
+            - ML model predictions
 
 # Trade-offs and Decisions
     - Ingestion: FRED and Yahoo Finance libraries contain every piece of data I need.
@@ -83,7 +91,7 @@
 
 # Open Questions
     - should I use star schema for gold layer?
-    - where should my calculations from my signals be stored (silver?)
+    - do I have enough data to train XGBoost and Random Forest on?
     - 
 
 # Timeline
