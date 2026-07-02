@@ -26,7 +26,7 @@
 
 # Tech Stack:
     1. Ingestion
-     - Python + requests for FRED, Treasury, and Yahoo Finance APIs
+     - FREDAPI python library, requests for Yahoo Finance
 
     2. Storage
      - LocalStack offline S3 bucket to mimic AWS free tier for bronze layer
