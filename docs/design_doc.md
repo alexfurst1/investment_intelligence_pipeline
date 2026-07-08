@@ -65,15 +65,14 @@
         - UNRATE (unemployment rate)
         - GDP (gdp growth, useful for regime detection)
         - DSG30 (good for broader yield picture)
-        - FEDFUNDS (for sharpe ratio)
     2. To be fetched from Yahoo Finance:
         - asset signals (sharpe ratio, max drawdown, volatility regime)
 
     Schemas:
         Bronze layer:
-            - raw parquet files
+            - raw parquet files, 
         Silver layer:
-            - need to test FRED and Yahoo APIS first
+            - 
         Gold layer:
             - ML model predictions
 

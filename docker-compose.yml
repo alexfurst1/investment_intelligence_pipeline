@@ -5,6 +5,7 @@ services:
       - "4566:4566"
     environment:
       - SERVICES=s3
+      - PERSISTENCE=1
     volumes:
       - localstack-data:/var/lib/localstack
 
