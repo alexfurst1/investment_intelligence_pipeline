@@ -2,15 +2,18 @@ from fredapi import Fred
 import yfinance as yf
 import os
 
-def backfill_fred_signals(): #backfills all FRED series listed in 'signals' up to today, sends to bronze layer s3 bucket.
+# backfills FRED and yfinance data idempotently. each "to_parquet" method completely rewrites the file path its written to.
+
+def backfill_fred_signals(): 
 
     fred = Fred(api_key=os.getenv('FRED_API_KEY'))
 
-    signals = ['DSG10','DSG2','DSG30','UNRATE','CPIAUCSL','FEDFUNDS','GDP']
+    # signal id from FRED to be fetched with respective native frequency
+    signals = ['DGS2','DGS10','DGS30','UNRATE','CPIAUCSL','FEDFUNDS','GDP']
 
     for signal in signals:
         try:
-            series = fred.get_series(signal,frequency="d")
+            series = fred.get_series(signal)
         except Exception as e:
             print(f"Error: failed to fetch signal: {signal}, e = {e}. Skipping signal.")
             continue
