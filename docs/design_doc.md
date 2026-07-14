@@ -1,7 +1,7 @@
 # Personal Investment Intelligence Pipeline with Downstream ML
 
 # Problem Statement
- I, a 22 year old post-grad with a small amount of money, would like to learn about investing long term, medium term, and short term. I would also like showcase my software, data, and machine learning engineering skills, while filling knowledge gaps through applied data engineering.
+ I, a 22 year old post-grad with a small amount of money, would like to learn about investing long term, medium term, and short term. I would also like showcase my software, data, and machine learning engineering skills, while filling knowledge gaps through applied data and ML engineering.
 
 # Goals: 
     - Showcase production-minded data engineering practices
