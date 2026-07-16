@@ -58,13 +58,13 @@
 
 # Data Model
     1. To be fetched from FRED:
-        - DSG10 (yield curve slope)
-        - DSG2 
+        - DGS10 (yield curve slope)
+        - DGS2 
         - CPIAUCSL (inflation)
         - FEDFUNDS (fed rate)
         - UNRATE (unemployment rate)
         - GDP (gdp growth, useful for regime detection)
-        - DSG30 (good for broader yield picture)
+        - DGS30 (good for broader yield picture)
     2. To be fetched from Yahoo Finance:
         - asset signals (sharpe ratio, max drawdown, volatility regime)
 

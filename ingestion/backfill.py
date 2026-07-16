@@ -21,7 +21,6 @@ def backfill_fred_signals():
         df = series.to_frame(name="value")
         df.index.name = 'date'
         df = df.reset_index()
-        df['series_id'] = signal
         
         try:
             df.to_parquet(
@@ -33,18 +32,22 @@ def backfill_fred_signals():
                     'client_kwargs': {'endpoint_url': 'http://localhost:4566'}
                     }
             )
+            print(f"Bronze ingestion for {signal} was a success.")
         except Exception as e:
             print(f"Error: failed to upload signal: {signal} to bucket as parquet. e = {e}. Skipping signal.")
             continue
 
+
 def backfill_yfinance_signals():
     try:
         df = yf.download('SPY',period='max')
+        df.columns = df.columns.get_level_values(0)
+        df.index.name = 'date'
         df = df.reset_index()
-        df['source'] = 'SPY'
+        df.columns = df.columns.str.lower()
     except Exception as e:
         print(f"Error: yfinance failed to fetch. e = {e}")
-    
+
     try:
         df.to_parquet(
             f's3://bronze-bucket/yfinance/series=SPY/data.parquet',
@@ -55,9 +58,8 @@ def backfill_yfinance_signals():
                 'client_kwargs': {'endpoint_url': 'http://localhost:4566'}
                 }
         )
+        print(f"Bronze ingestion for SPY was a success")
     except Exception as e:
         print(f"Error: failed to upload signal: SPY to bucket as parquet. e = {e}.")
-
-# TODO def fetch_signals(): 
             
 
