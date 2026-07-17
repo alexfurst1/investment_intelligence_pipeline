@@ -1,0 +1,4 @@
+SELECT
+date::DATE,
+value AS gdp
+FROM read_parquet("s3://bronze-bucket/fred/series=GDP/data.parquet", hive_partitioning=true)
