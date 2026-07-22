@@ -13,15 +13,13 @@
     - test data quality with using dbt
     - extract and engineer multiple macroeconomic signals from data
     - input cleaned data into ML model to recommend asset allocation with horizon variable
-    - serve recommendations with FastAPI endpoint(s)
+    - serve regime classification to FastAPI endpoint(s)
 
 # Non-goals:
     - does not extract useless data
-    - does not cost more than $20
-    - is not intended for multiple users, built for a single user at a time
-    - not a live trading system, no money is being transferred, purely recommendations
+    - does not cost money to create
+    - does not give recommendations
     - does not cover individual stocks, purely macroeconomic
-    - recommendations are historically grounded but not guaranteed.
     - does not cover day trading. Investment recommendations are for 1 yr - 30 yr horizons.
 
 # Tech Stack:
