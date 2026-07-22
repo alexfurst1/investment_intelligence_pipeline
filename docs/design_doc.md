@@ -20,7 +20,7 @@
     - does not cost money to create
     - does not give recommendations
     - does not cover individual stocks, purely macroeconomic
-    - does not cover day trading. Investment recommendations are for 1 yr - 30 yr horizons.
+    - does not cover day trading. 
 
 # Tech Stack:
     1. Ingestion
