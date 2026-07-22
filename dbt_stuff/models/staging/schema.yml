@@ -1,0 +1,94 @@
+version: 2 
+
+models:
+  - name: stg_fred_cpiaucsl
+    columns:
+      - name: date
+        tests: 
+          - not_null
+          - unique
+      - name: cpiaucsl
+        tests:
+          - not_null
+
+  - name: stg_fred_dgs2
+    columns:
+      - name: date
+        tests:
+          - not_null
+          - unique
+      - name: dgs2
+        tests:
+          - not_null
+
+  - name: stg_fred_dgs10
+    columns:
+      - name: date
+        tests:
+          - not_null
+          - unique
+      - name: dgs10
+        tests:
+          - not_null
+  
+  - name: stg_fred_dgs30
+    columns:
+      - name: date
+        tests:
+          - not_null
+          - unique
+      - name: dgs30
+        tests:
+          - not_null
+
+  - name: stg_fred_fedfunds
+    columns:
+      - name: date
+        tests:
+          - not_null
+          - unique
+      - name: fedfunds
+        tests:
+          - not_null
+  
+  - name: stg_fred_gdp
+    columns:
+      - name: date
+        tests:
+          - not_null
+          - unique
+      - name: gdp
+        tests:
+          - not_null
+    
+  - name: stg_fred_unrate
+    columns:
+      - name: date
+        tests:
+          - not_null
+          - unique
+      - name: unrate
+        tests:
+          - not_null
+
+  - name: stg_yfinancec_spy
+    columns:
+      - name: date
+        tests:
+          - not_null
+          - unique
+      - name: spy_close
+        tests:
+          - not_null
+      - name: spy_high
+        tests: 
+          - not_null
+      - name: spy_low
+        tests:
+          - not_null
+      - name: spy_open
+        tests:
+          - not_null
+      - name: spy_volume
+        tests:
+          - not_null
