@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: signals_joined
+    columns:
+      - name: date
+        tests:
+          - not_null
+          - unique
