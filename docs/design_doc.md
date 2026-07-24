@@ -1,7 +1,7 @@
 # Personal Investment Intelligence Pipeline with Downstream ML
 
 # Problem Statement
- I, a 22 year old post-grad with a small amount of money, would like to learn about investing long term, medium term, and short term. I would also like showcase my software, data, and machine learning engineering skills, while filling knowledge gaps through applied data and ML engineering.
+ I, a 22 year old post-grad with a small amount of money, would like to learn about investing and the stock market. I would also like showcase my software, data, and machine learning engineering skills, while filling knowledge gaps through applied data and ML engineering.
 
 # Goals: 
     - Showcase production-minded data engineering practices
@@ -12,7 +12,7 @@
     - transform and structure data in a medallion-like architecture
     - test data quality with using dbt
     - extract and engineer multiple macroeconomic signals from data
-    - input cleaned data into ML model to recommend asset allocation with horizon variable
+    - input cleaned data into ML model to forecast market regime
     - serve regime classification to FastAPI endpoint(s)
 
 # Non-goals:
@@ -21,6 +21,7 @@
     - does not give recommendations
     - does not cover individual stocks, purely macroeconomic
     - does not cover day trading. 
+    - does not serve to a dashboard
 
 # Tech Stack:
     1. Ingestion
@@ -72,35 +73,65 @@
         Silver layer:
             - 
         Gold layer:
-            - ML model predictions
+            -
 
 # Trade-offs and Decisions
-    - Ingestion: FRED and Yahoo Finance libraries contain every piece of data I need.
-    - Storage: AWS free tier, I won't need to go above free limits, gives me exposure to AWS services
-    - Query engine: spark is overkill, regular pandas querying loads into memory which we don't want, and duckDB runs on Parquet files, and does not load queries or data into memory. My dataset won't be too big, but I want to use industry standard techniques as well, so DuckDB is the best choice.
-    - Orchestration: Prefect because this is a solo, mostly local project, that requires a lightweight architecture and flexibility. Dagster and Airflow especially are too overkill.
-    - Transformation: dbt. Industry standard, lightweight, works well locally, moderate learning curve.
-    - Warehouse: DuckDB for silver and gold warehouse layers. Was originally going to use regular PostgreSQL, but DuckDB is columnar, and I'm already using it for my query engine.
-    - ML: 
-    - Testing: Since dbt is industry standard, I will use it for schema enforcement in the silver layer. In bronze, and maybe even gold, python assertations will do.
-    - Serving: I have prior experience with FastAPI, so I will use it for simple endpoints
-    - Infra: Docker Compose. Terraform is overkill, and this will make my pipeline recreatable across different machines.
+
+- **Ingestion — `fredapi` + `yfinance`.** Between them they cover every series this
+  project needs, with no scraping, no API keys beyond a free FRED key, and no
+  vendor cost.
+- **Storage — S3-compatible object storage via LocalStack.** Bronze is Parquet in
+  an S3 API-compatible bucket running locally, so the pipeline is free to run and
+  reproducible on any machine. Real S3 is the deployment path — the code is
+  already written against the S3 API, so moving over is a credentials and endpoint
+  change, not a rewrite.
+- **Query engine + warehouse — DuckDB.** Reads bronze Parquet from S3 directly, so
+  there's no load stage between object storage and transforms. Columnar and
+  vectorized, which suits a workload that's all full-column scans and window
+  functions at single-node scale (~10⁵ rows). No server, no account — the
+  warehouse is one file in the repo, so the pipeline is clone-and-run. Mature dbt
+  adapter (`dbt-duckdb`).
+- **Transformation — dbt Core.** Industry standard, lightweight, runs locally
+  against DuckDB, and gives me lineage, `ref()`, and tests without additional
+  infrastructure.
+- **Testing — dbt tests in silver and gold.** Schema and data tests live next to
+  the models they cover, so correctness checks run as part of `dbt build` rather
+  than as a separate script.
+- **Orchestration — Prefect.** A solo, mostly local project needs a lightweight
+  scheduler with minimal setup. Airflow in particular — and Dagster to a lesser
+  degree — carries deployment and conceptual overhead that a handful of
+  dependent tasks doesn't justify.
+- **ML — logistic regression, Random Forest, XGBClassifier.** Logistic regression
+  as an interpretable baseline, then tree ensembles to see whether non-linear
+  structure earns its complexity. Evaluated on per-class precision and recall
+  rather than accuracy, since the classes are heavily imbalanced.
+- **Serving — FastAPI.** Prior experience with it, and the surface area here is a
+  couple of endpoints returning class probabilities from gold.
+- **Infrastructure — Docker and Docker Compose.** Makes the pipeline reproducible
+  across machines. Terraform is aimed at provisioning real cloud infrastructure,
+  which this project doesn't have.
 
 # Open Questions
     - should I use star schema for gold layer?
     - do I have enough data to train XGBoost and Random Forest on?
-    - 
+    - how far in the future should I be predicting the market regime? 1 month, quarter, year, etc... ?
 
 # Timeline
+    - 7/27 - 8/2:
+      - decide ml output, complete data models, build gold and engineer features
+    - 8/3 - 8/10: 
+      - create gold tests, train models, tune, endpoints, orchestrate pipeline
+      - plan for v2
 
 # Success criteria
-    - docker is set up
-    - all needed data can be pulled from fredapi
-    - all medallion layers are set up
-    - pipeline can run from each stage to the next
-    - all pipeline layers are complete
-    - data testing exists
-    - ML is trained and can conduct inference
-    - 
+    - regimes to be classified are decided on
+    - gold data model is complete
+    - all gold models are built including engineered features
+    - gold model tests are created
+    - all 3 ML models are trained and evaluated
+    - models are tuned
+    - endpoints are created
+    - pipeline is orchestrated
+    - v2 is planned
 
     
