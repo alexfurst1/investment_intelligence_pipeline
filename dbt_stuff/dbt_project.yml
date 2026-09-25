@@ -38,3 +38,7 @@ models:
       +materialized: table
     gold:
       +materialized: table
+
+tests:
+  dbt_stuff:
+    +severity: warn

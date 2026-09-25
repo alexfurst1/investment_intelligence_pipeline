@@ -5,5 +5,8 @@ models:
     columns:
       - name: date
         tests:
+          - unique:
+            config:
+              tags: ["critical"]
+              severity: error
           - not_null
-          - unique
